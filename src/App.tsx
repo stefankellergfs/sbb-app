@@ -6,6 +6,7 @@ import {
   normalizeStationName,
   parseDurationToMinutes,
   type StationboardEntry,
+  type StationLocation,
   type StopPoint,
 } from "./api/opendata";
 import { generateChallenge, type Challenge, type Difficulty } from "./game/challenge";
@@ -14,6 +15,7 @@ import { DepartureBoard } from "./components/DepartureBoard";
 import { StopPicker } from "./components/StopPicker";
 import { JourneyLog } from "./components/JourneyLog";
 import { ResultCard } from "./components/ResultCard";
+import { StationSearchInput } from "./components/StationSearchInput";
 import "./App.css";
 
 const DIFFICULTIES: { key: Difficulty; label: string; hint: string }[] = [
@@ -44,9 +46,10 @@ function App() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [optimalMinutes, setOptimalMinutes] = useState<number | null>(null);
   const [optimalTransfers, setOptimalTransfers] = useState<number | null>(null);
+  const [customFrom, setCustomFrom] = useState<StationLocation | null>(null);
+  const [customTo, setCustomTo] = useState<StationLocation | null>(null);
 
-  async function startChallenge(diff: Difficulty) {
-    const c = generateChallenge(diff);
+  async function beginChallenge(c: Challenge) {
     const now = new Date();
     setChallenge(c);
     setStartTime(now);
@@ -60,6 +63,20 @@ function App() {
     setOptimalTransfers(null);
     setPhase("loading-board");
     await loadBoard(c.from.name, now);
+  }
+
+  async function startChallenge(diff: Difficulty) {
+    await beginChallenge(generateChallenge(diff));
+  }
+
+  const customStationsMatch =
+    customFrom && customTo && normalizeStationName(customFrom.name) === normalizeStationName(customTo.name);
+
+  async function startCustomChallenge() {
+    if (!customFrom || !customTo || customStationsMatch) return;
+    await beginChallenge({ from: customFrom, to: customTo });
+    setCustomFrom(null);
+    setCustomTo(null);
   }
 
   async function loadBoard(station: string, when: Date) {
@@ -162,6 +179,23 @@ function App() {
                 <span className="hint">{d.hint}</span>
               </button>
             ))}
+          </div>
+
+          <div className="divider">oder eigene Strecke</div>
+
+          <div className="custom-challenge">
+            <StationSearchInput label="Start" value={customFrom} onChange={setCustomFrom} />
+            <StationSearchInput label="Ziel" value={customTo} onChange={setCustomTo} />
+            {customStationsMatch && (
+              <p className="warning">Start und Ziel müssen unterschiedlich sein.</p>
+            )}
+            <button
+              className="primary"
+              disabled={!customFrom || !customTo || !!customStationsMatch}
+              onClick={startCustomChallenge}
+            >
+              Los geht's
+            </button>
           </div>
         </div>
       )}

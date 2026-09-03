@@ -1,3 +1,7 @@
+export interface TravelStation {
+  name: string;
+}
+
 export interface Leg {
   journeyLabel: string;
   fromStation: string;

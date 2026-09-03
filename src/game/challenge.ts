@@ -1,10 +1,11 @@
-import { STATIONS, areFarRegions, type StationInfo } from "../data/stations";
+import { STATIONS, areFarRegions } from "../data/stations";
+import type { TravelStation } from "./types";
 
 export type Difficulty = "kurz" | "mittel" | "lang";
 
 export interface Challenge {
-  from: StationInfo;
-  to: StationInfo;
+  from: TravelStation;
+  to: TravelStation;
 }
 
 function pickRandom<T>(items: T[]): T {

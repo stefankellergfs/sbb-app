@@ -8,7 +8,9 @@ es gibt eine Punktzahl.
 
 ## Spielprinzip
 
-1. Schwierigkeit wählen (kurze/mittlere/grosse Reise).
+1. Schwierigkeit wählen (kurze/mittlere/grosse Reise) - oder Start- und
+   Zielbahnhof frei per Volltextsuche (über alle Schweizer Bahnhöfe) selbst
+   wählen.
 2. Die App zeigt die echte, aktuelle Abfahrtstafel deines Standorts.
 3. Zug auswählen, Ausstiegsbahnhof wählen - die App aktualisiert Standort und
    Uhrzeit entsprechend den echten Fahrzeiten.
@@ -36,5 +38,5 @@ npm run build     # Typecheck + Produktions-Build
 - `src/api/opendata.ts` - Fetch-Wrapper und Typen für die Fahrplan-API
 - `src/data/stations.ts` - kuratierte Liste Schweizer Bahnhöfe für Herausforderungen
 - `src/game/` - Challenge-Generator, Punkteberechnung, Spielzustands-Typen
-- `src/components/` - Abfahrtstafel, Ausstiegswahl, Routen-Log, Ergebnis-Karte
+- `src/components/` - Abfahrtstafel, Bahnhof-Suche, Ausstiegswahl, Routen-Log, Ergebnis-Karte
 - `src/App.tsx` - Spielablauf/State-Machine
